@@ -1,26 +1,39 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import moment from 'moment';
 
-function App() {
+interface Drink {
+  type: string,
+  time: Date,
+}
+
+const newDrink = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    {
+      type: 'beer',
+      time: new Date(),
+    }
+  )
+}
+
+const App: React.FC = () => {
+  type InitialState = Drink[];
+  const initialState: InitialState = [];
+  const [drinks, setDrinks] = useState(initialState);
+
+  return (
+    <div>
+      Drinks: {drinks.length}
+
+      <ul>
+        { drinks.map((drink) => <li key={drink.time.toString()}>{moment(drink.time).format('LTS')}</li>) }
+      </ul>
+
+      <div>
+        <button onClick={() => setDrinks(drinks => [...drinks, newDrink()])}>ADD</button>
+        <button onClick={() => setDrinks(initialState)}>Reset</button>
+      </div>
     </div>
   );
-}
+};
 
 export default App;
